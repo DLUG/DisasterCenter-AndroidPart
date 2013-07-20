@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-public class DisasterBoardFragment extends BaseFragment {
+public class MessageBoxFragment extends BaseFragment {
 
 
 	@Override
@@ -16,7 +16,7 @@ public class DisasterBoardFragment extends BaseFragment {
 		Context context = getActivity();
 		
 		TextView textView = new TextView(context);
-		textView.setText(DisasterBoardFragment.class.getName());
+		textView.setText(MessageBoxFragment.class.getName());
 		textView.setGravity(Gravity.CENTER);
 		
 		

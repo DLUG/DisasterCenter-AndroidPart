@@ -5,17 +5,23 @@ import java.util.HashMap;
 
 import org.dlug.disastercenter.R;
 import org.dlug.disastercenter.fragment.BaseFragment;
-import org.dlug.disastercenter.fragment.DisasterBoardFragment;
 import org.dlug.disastercenter.fragment.DisasterInfoListFragment;
-import org.dlug.disastercenter.fragment.DisasterNewsflashFragment;
+import org.dlug.disastercenter.fragment.DisasterNewsListFragment;
+import org.dlug.disastercenter.fragment.DisasterReportFragment;
+import org.dlug.disastercenter.fragment.DisasterReportListFragment;
+import org.dlug.disastercenter.fragment.MessageBoxFragment;
 import org.dlug.disastercenter.fragment.SettingFragment;
+import org.dlug.disastercenter.service.DisasterService;
 
+import android.R.color;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.SlidingPaneLayout;
 import android.support.v4.widget.SlidingPaneLayout;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -34,21 +40,23 @@ public class MainActivity extends BaseActivity {
 		
 		ViewGroup menuLayout = (ViewGroup)findViewById(R.id.activity_main_LinearLayout_menu);
 		SlidingPaneLayout layout = (SlidingPaneLayout)findViewById(R.id.activity_main_SlidingPaneLayout);
-		layout.setSliderFadeColor(Color.TRANSPARENT);
-		layout.setCoveredFadeColor(Color.BLACK);
 		layout.setParallaxDistance(1);
-		layout.closePane();
-		
+		layout.setCoveredFadeColor(Color.BLACK);
 		
 		mMenuAdapter = new MenuAdapter(this, menuLayout, layout, R.id.activity_main_FrameLayout_content);
 	
-		mMenuAdapter.addMenu("재난 정보", DisasterInfoListFragment.class, null);
-		mMenuAdapter.addMenu("재난 속보", DisasterNewsflashFragment.class, null);
-		mMenuAdapter.addMenu("게시판", DisasterBoardFragment.class, null);
+		mMenuAdapter.addMenu("재난신고 하기", DisasterReportFragment.class, null);
+		mMenuAdapter.addMenu("재난신고 현황", DisasterReportListFragment.class, null);
+		mMenuAdapter.addMenu("재난뉴스", DisasterNewsListFragment.class, null);
+		mMenuAdapter.addMenu("재난정보", DisasterInfoListFragment.class, null);
+		mMenuAdapter.addMenu("수신메세지", MessageBoxFragment.class, null);
 		mMenuAdapter.addMenu("설정", SettingFragment.class, null);
 		
+		mMenuAdapter.openMenu("재난뉴스");
 		
-		mMenuAdapter.openMenu("Folder");
+
+		// 설정 시 시작해야함.
+		startService(new Intent(this, DisasterService.class));
 	}
 
 
@@ -62,17 +70,7 @@ public class MainActivity extends BaseActivity {
 	@Override
 	protected void onStop() {
 		super.onStop();
-		
-		
 	}
-	
-	@Override
-	public void onBackPressed() {
-		if ( mMenuAdapter.onBackPressed() ) {
-			moveTaskToBack(true);
-		}
-	}
-	
 	
 	
 	private static class MenuAdapter {

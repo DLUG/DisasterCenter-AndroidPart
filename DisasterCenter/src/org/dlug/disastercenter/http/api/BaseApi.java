@@ -143,7 +143,7 @@ public abstract class BaseApi {
 		
 	}
 
-	protected abstract Object convertResponse(int requestTag, String responseText);
+	protected abstract Object convertResponse(int requestTag, String responseText) throws Exception;
 	
 	
 	

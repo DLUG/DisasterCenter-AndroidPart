@@ -2,11 +2,11 @@ package org.dlug.disastercenter.fragment;
 
 import org.dlug.disastercenter.constSet.ConstSet.InfoListType;
 
-public class DisasterInfoListFragment extends DisasterBaseInfoListFragment {
+public class DisasterNewsListFragment extends DisasterBaseInfoListFragment {
 
 	@Override
 	protected int getInfoListType() {
-		return InfoListType.INFO;
+		return InfoListType.NEWS;
 	}
 
 }

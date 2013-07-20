@@ -1,0 +1,170 @@
+package org.dlug.disastercenter.preference;
+
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+
+import org.dlug.disastercenter.constSet.ConstSet.PreferenceKey;
+import org.dlug.disastercenter.utils.Trace;
+
+import android.content.Context;
+import android.content.SharedPreferences;
+
+public class DisasterPreference {
+	private static final String PREFERENCE_NAME = " DisasterPreference";
+
+		
+	public static void setSecretCode(Context context, String value) {
+		setValue(context, PreferenceKey.SECRET_CODE, value);
+	}
+	
+	public static String getSecretCode(Context context) {
+		return getPreference(context).getString(PreferenceKey.SECRET_CODE, "");
+	}
+	
+	public static void setAlertRange(Context context, int value) {
+		setValue(context, PreferenceKey.ALERT_RANGE, value);
+	}
+	
+	public static int getAlertRange(Context context) {
+		return getPreference(context).getInt(PreferenceKey.ALERT_RANGE, 10);
+	}
+//
+//		// 
+//		public static void setLoginPassword(Context context, String password) {
+//			setValue(context, PreferenceKey.LOGIN_PASSWORD, password);
+//		}
+//		
+//		public static String getLoginPassword(Context context) {
+//			return getPreference(context).getString(PreferenceKey.LOGIN_PASSWORD, "");
+//		}
+//		
+//		// 
+//		public static void setAutoLoginEnabled(Context context, boolean enabled) {
+//			setValue(context, PreferenceKey.AUTO_LOGIN_ENABLED, enabled);
+//		}
+//		
+//		public static boolean isAutoLoginEnabled(Context context) {
+//			return getPreference(context).getBoolean(PreferenceKey.AUTO_LOGIN_ENABLED, false);
+//		}
+	
+	
+	
+	
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	////////////////////						값 저장을 위한 메소드								////////////////////	
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	private static synchronized SharedPreferences getPreference(Context context) {
+		return context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE );
+	}
+	
+
+	private static synchronized void setValue(Context context, String key, String value) {
+		SharedPreferences pref = getPreference(context);
+		SharedPreferences.Editor editor = pref.edit();
+		
+		editor.putString(key, value);
+		editor.commit();
+	}
+	
+	private static synchronized void setValue(Context context, String key, boolean value) {
+		SharedPreferences pref = getPreference(context);
+		SharedPreferences.Editor editor = pref.edit();
+		
+		editor.putBoolean(key, value);
+		editor.commit();
+	}
+	
+	private static synchronized void setValue(Context context, String key, int value) {
+		SharedPreferences pref = getPreference(context);
+		SharedPreferences.Editor editor = pref.edit();
+		
+		editor.putInt(key, value);
+		editor.commit();
+	}
+	
+	private static synchronized void setValue(Context context, String key, long value) {
+		SharedPreferences pref = getPreference(context);
+		SharedPreferences.Editor editor = pref.edit();
+		
+		editor.putLong(key, value);
+		editor.commit();		
+	}
+	
+	private static synchronized void setValue(Context context, String key, float value) {
+		SharedPreferences pref = getPreference(context);
+		SharedPreferences.Editor editor = pref.edit();
+		
+		editor.putFloat(key, value);
+		editor.commit();		
+	}
+	
+	private static synchronized void removeValue(Context context, String key) {
+		SharedPreferences pref = getPreference(context);
+		SharedPreferences.Editor editor = pref.edit();
+		
+		editor.remove(key);
+		editor.commit();
+	}
+	
+
+	private static synchronized void setObject(Context context, String name, Object object) {
+		FileOutputStream fos   = null;
+		ObjectOutputStream oos = null;
+		clearObject(context, name);
+		
+		try {
+			fos = context.openFileOutput(name, Context.MODE_PRIVATE);
+			oos = new ObjectOutputStream(fos);
+			oos.writeObject(object);
+			oos.flush();
+		} catch (Exception e) {
+			
+		} finally {
+			if ( fos != null ) {
+				try {
+					fos.close();
+				} catch (IOException e) { }
+			}
+			
+			if ( oos != null ){
+				try {
+					oos.close();
+				} catch (IOException e) { }
+			}
+		}	
+	}
+	
+	private static synchronized Object getObject(Context context, String name) {
+		Object object = null;
+		FileInputStream fis = null;
+		ObjectInputStream ois = null;
+		try {
+			fis = context.openFileInput(name);
+			ois = new ObjectInputStream(fis);
+			object = ois.readObject();
+			
+		} catch (Exception e) {
+			Trace.Error(e.toString());
+		} finally {
+			if ( fis != null ) {
+				try {
+					fis.close();
+				} catch (IOException e) { }
+			}
+			
+			if ( ois != null ){
+				try {
+					ois.close();
+				} catch (IOException e) { }
+			}
+		}
+		return object;
+	}
+	 
+	private static synchronized void clearObject(Context context, String name) {
+		context.deleteFile(name);
+	}
+}
