@@ -1,7 +1,6 @@
 package org.dlug.disastercenter.row;
 
 import org.dlug.disastercenter.R;
-import org.dlug.disastercenter.data.DisasterInfoData;
 import org.dlug.disastercenter.data.DisasterReportListData;
 
 import android.content.Context;

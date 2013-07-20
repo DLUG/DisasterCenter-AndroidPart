@@ -13,7 +13,6 @@ import org.dlug.disastercenter.fragment.MessageBoxFragment;
 import org.dlug.disastercenter.fragment.SettingFragment;
 import org.dlug.disastercenter.service.DisasterService;
 
-import android.R.color;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -21,7 +20,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.widget.SlidingPaneLayout;
 import android.support.v4.widget.SlidingPaneLayout;
 import android.view.View;
 import android.view.View.OnClickListener;
