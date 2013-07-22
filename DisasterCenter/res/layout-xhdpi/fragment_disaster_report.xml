@@ -1,0 +1,72 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white" >
+
+	<FrameLayout 
+	    android:id="@+id/fragment_disaster_report_FrameLayout_map"
+	    android:layout_width="match_parent"
+	    android:layout_height="200dp" />
+	
+	<LinearLayout 
+	    android:orientation="vertical"
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:paddingLeft="15dp"
+	    android:paddingRight="15dp" >
+	    <FrameLayout 
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_marginTop="22dp">
+	        
+	        <Button
+		    	android:id="@+id/fragment_disaster_report_Button_disasterType"
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:gravity="center_vertical|left"
+		        android:paddingLeft="12dp"
+		        android:textColor="#FF828282"
+		        android:textSize="15sp"
+		        android:text="재난유형"
+		        android:background="@drawable/btn_report_select_disaster" />
+	        
+	        <ImageView
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_gravity="center_vertical|right"
+	            android:layout_marginRight="10dp"
+	            android:src="@drawable/ic_disaster_select" />
+	    </FrameLayout>
+	   	
+	
+		    
+	    <EditText 
+	    	android:id="@+id/fragment_disaster_report_EditText_content"
+	        android:layout_width="match_parent"
+	        android:layout_height="0dp"
+	        android:layout_weight="1"
+	        android:layout_marginLeft="2dp"
+	        android:layout_marginRight="2dp"
+	        android:layout_marginTop="5dp"
+	        android:padding="5dp"
+	        android:gravity="top|left"
+	        android:textSize="14sp"
+	        android:textColor="#FF828282"
+	        android:hint="자세한 정보"
+	        android:background="@drawable/bg_report_editbox" />
+	    
+    	<Button 
+    	    android:id="@+id/fragment_disaster_report_Button_report"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_marginLeft="2dp"
+	        android:layout_marginRight="2dp"
+	        android:layout_marginTop="10dp"
+	        android:layout_marginBottom="10dp"
+	        android:background="@drawable/btn_report"
+	        android:textColor="@android:color/white"
+	        android:text="재난신고" />
+	</LinearLayout>
+
+</LinearLayout>

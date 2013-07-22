@@ -1,0 +1,88 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFF5F5F5"
+    android:paddingLeft="14dp"
+    android:paddingRight="14dp" >
+
+	<TextView 
+	    android:id="@+id/fragment_disaster_setting_TextView_title"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:paddingLeft="10dp"
+	    android:paddingTop="15dp"
+	    android:paddingBottom="15dp"
+	    android:text="알림관련" 
+	    android:textColor="#FF0078FF" />
+	
+	<ImageView 
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:scaleType="fitXY"
+	    android:src="@drawable/line_blue" /> 
+	    
+    <!-- 메세지 수신 -->	
+	<org.dlug.disastercenter.row.PreferenceCheckRow
+	    android:id="@+id/fragment_disaster_setting_PreferenceCheckRow_messageReceive"
+	    android:layout_width="match_parent"
+	    android:layout_height="50dp" />
+   
+	<ImageView 
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:scaleType="fitXY"
+	    android:src="@drawable/line_list" /> 
+	    
+	    
+    <!-- 소리알림 -->
+	<org.dlug.disastercenter.row.PreferenceCheckRow
+	    android:id="@+id/fragment_disaster_setting_PreferenceCheckRow_sound"
+	    android:layout_width="match_parent"
+	    android:layout_height="50dp" />
+    
+	<ImageView 
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:scaleType="fitXY"
+	    android:src="@drawable/line_list" /> 
+	    
+	<!-- 진동알림 -->
+    <org.dlug.disastercenter.row.PreferenceCheckRow
+	    android:id="@+id/fragment_disaster_setting_PreferenceCheckRow_vibe"
+	    android:layout_width="match_parent"
+	    android:layout_height="50dp" />
+    
+    <ImageView 
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:scaleType="fitXY"
+	    android:src="@drawable/line_list" /> 
+    
+    <!-- 알림지역범위 -->
+    <org.dlug.disastercenter.row.PreferenceTextRow 
+	    android:id="@+id/fragment_disaster_setting_PreferenceTextRow_range"
+	    android:layout_width="match_parent"
+	    android:layout_height="50dp" />
+   	
+    <ImageView 
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:scaleType="fitXY"
+	    android:src="@drawable/line_list" /> 
+    
+    
+    <!-- 수신알림조건 -->
+  	<!-- 
+    <org.dlug.disastercenter.row.PreferenceTextRow 
+	    android:id="@+id/fragment_disaster_setting_PreferenceTextRow_condition"
+	    android:layout_width="match_parent"
+	    android:layout_height="50dp" />
+    
+    <ImageView 
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:scaleType="fitXY"
+	    android:src="@drawable/line_list" /> 
+     -->
+</LinearLayout>

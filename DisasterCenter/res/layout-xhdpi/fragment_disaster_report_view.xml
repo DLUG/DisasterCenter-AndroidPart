@@ -1,0 +1,62 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFEBEBEB" >
+
+	<FrameLayout
+		android:id="@+id/fragment_disaster_report_view_Map"
+	    android:layout_width="match_parent"
+	    android:layout_height="0dp"
+	    android:layout_weight="1" />
+	
+	<LinearLayout 
+	    android:orientation="vertical"
+	    android:layout_width="match_parent"
+	    android:layout_height="300dp">
+	    
+	    <org.dlug.disastercenter.row.DisasterReportRow 
+	        android:id="@+id/fragment_disaster_report_view_DisasterReportRow"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"/>
+	    	
+		<ScrollView 
+		    android:layout_width="match_parent"
+		    android:layout_height="match_parent"
+		    android:fillViewport="true" >	
+		    <LinearLayout 
+			    android:orientation="vertical"
+			    android:layout_width="match_parent"
+			    android:layout_height="wrap_content">
+		
+		    <TextView
+		        android:id="@+id/fragment_disaster_report_view_TextView_address"
+		        android:layout_width="match_parent"
+		        android:layout_height="60dp"
+		        android:gravity="center_vertical"
+		        android:layout_marginLeft="10dp"
+		        android:layout_marginRight="10dp"
+		        android:textColor="@android:color/black" />
+			
+			<ImageView
+			    android:layout_width="match_parent"
+			    android:layout_height="wrap_content"
+		        android:layout_marginLeft="10dp"
+		        android:layout_marginRight="10dp"
+			    android:scaleType="fitXY"
+			    android:background="@drawable/line_blue" />
+			
+			<TextView
+		        android:id="@+id/fragment_disaster_report_view_TextView_content"
+		        android:layout_width="match_parent"
+		        android:layout_height="match_parent"
+		        android:layout_marginTop="15dp"
+		        android:layout_marginLeft="10dp"
+		        android:layout_marginRight="10dp"
+		        android:textColor="#FF303030"  />
+		    
+		    </LinearLayout>
+	    </ScrollView>
+		
+	</LinearLayout>
+</LinearLayout>

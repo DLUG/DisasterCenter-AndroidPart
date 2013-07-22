@@ -1,0 +1,50 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFF5F5F5" >
+
+	<LinearLayout 
+	    android:orientation="horizontal"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:padding="10dp"
+	    android:gravity="center" >
+	    
+	    <ImageView
+	        android:id="@+id/row_disaster_message_ImageView_icon"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content" />
+	
+	    
+	    <LinearLayout 
+	        android:orientation="vertical"
+	        android:layout_width="0dp"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="1"
+	        android:layout_marginLeft="10dp" >
+		   	<TextView
+		    	android:id="@+id/row_disaster_message_TextView_content"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:textColor="@android:color/black"
+		        android:singleLine="true" />
+		   	
+			<TextView
+		        android:id="@+id/row_disaster_message_TextView_date"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_marginTop="3dp"
+		        android:textColor="#FF969696"
+		        android:textSize="12sp"
+		        android:singleLine="true" />
+	    </LinearLayout>
+	        
+   	</LinearLayout>
+   
+	<ImageView
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:scaleType="fitXY"
+	    android:src="@drawable/line_list" />
+</LinearLayout>
