@@ -1,6 +1,11 @@
 package org.dlug.disastercenter;
 
+import org.dlug.disastercenter.constSet.ConstSet.CommonSet;
+import org.dlug.disastercenter.data.DisasterMessageData;
+import org.dlug.disastercenter.db.DBAdapter;
+import org.dlug.disastercenter.preference.DisasterPreference;
 import org.dlug.disastercenter.utils.PushWakeLock;
+import org.dlug.disastercenter.utils.Trace;
 
 import android.annotation.SuppressLint;
 import android.app.Notification;
@@ -8,11 +13,12 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
+import android.view.Gravity;
 import android.widget.Toast;
 
 import com.google.android.gcm.GCMBaseIntentService;
@@ -21,22 +27,17 @@ import com.google.android.gcm.GCMBaseIntentService;
 
 //
 public class GCMIntentService extends GCMBaseIntentService {
-	public static final int ID_MATCH = 0;
 	public static final int ID_MSG = 1;
-	public static final int ID_CONDITION = 2;
-	public static final int ID_STORY = 3;
-	public static final int ID_SCHEDULE = 3;
 	
 	private static Toast mToast;
 	private Handler mHandler = new Handler(Looper.getMainLooper());
 
 	public GCMIntentService() {
-		this("597949027343", null);
-		
+		this(CommonSet.GCM_PROJECT_ID, null);
 	}
 
 	public GCMIntentService(String... senderIds) {
-		super("597949027343", null);
+		super(CommonSet.GCM_PROJECT_ID, null);
 	}
 
 	public static void generateNotification(Context context, int notifyID, String message, Bundle extras, Class<? extends Object> component) {
@@ -47,20 +48,20 @@ public class GCMIntentService extends GCMBaseIntentService {
 		NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 		PendingIntent pendingIntent = null;
 		
-		Intent notificationIntent = new Intent(context, component);
-		notificationIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-		if ( extras != null )
-			notificationIntent.putExtras(extras);
-
-		pendingIntent = PendingIntent.getActivity(context, 0, notificationIntent, 0);
+		if ( component != null ) {
+			Intent notificationIntent = new Intent(context, component);
+			notificationIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			if ( extras != null )
+				notificationIntent.putExtras(extras);
 	
+			pendingIntent = PendingIntent.getActivity(context, 0, notificationIntent, 0);
+		}
 		
 		
+		// OS 버전에  따른 notification 생성.
 		// deprecate: new Notification(icon, tickerText, when)
-		
 		// deprecate: setLatestEventInfo(context, title, message, pedingIntent)
 		Notification notification = null;
-		
 		if ( Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH ) 
 			notification = getNotification(context, notifyID, message, extras, component);	
 		 
@@ -72,7 +73,16 @@ public class GCMIntentService extends GCMBaseIntentService {
 		notification.tickerText = message;
 		notification.when = when;
 		
-		notification.defaults = Notification.DEFAULT_ALL;
+		notification.defaults = Notification.DEFAULT_LIGHTS;
+		
+		// Setting에 의한 알림 형태 설정.
+		if ( DisasterPreference.isAlarmSoundEnabled(context) ) {
+			notification.defaults |= Notification.DEFAULT_SOUND;
+		}		
+		
+		if ( DisasterPreference.isAlarmVibeEnabled(context) ) {
+			notification.defaults |= Notification.DEFAULT_VIBRATE;
+		}		
 
 		notificationManager.cancel(notifyID);
 		notificationManager.notify(notifyID, notification);
@@ -81,39 +91,36 @@ public class GCMIntentService extends GCMBaseIntentService {
 	
 	@SuppressWarnings("deprecation")
 	private static Notification getNotification(Context context, int notifyID, String message, Bundle extras, Class<? extends Object> component) {
-//		int icon = R.drawable.app_icon01;
-//		
-//		Notification notification = new Notification(icon, null, -1);
-//		notification.setLatestEventInfo(context, "더블하트", message, null);
-		
-		
-		
+		int icon = R.drawable.ic_launcher;
+
+		Notification notification = new Notification(icon, null, -1);
+		notification.setLatestEventInfo(context, context.getString(R.string.app_name), message, null);
  
-//		return notification;
-		return null;
+		return notification;
 	}
 	
 	
 	@SuppressLint("NewApi")
 	private static Notification getNotificationForNewAPI(Context context, int notifyID, String message, Bundle extras, Class<? extends Object> component) {
-//		int largeIcon = R.drawable.app_icon01;
-//		int smallIcon = R.drawable.app_icon02;
-//		
-//		Notification notification = new Notification.Builder(context)
-//		.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), largeIcon))
-//		.setSmallIcon(smallIcon)
-//		.setContentText(message)
-//		.setContentTitle("더블하트")
-//		.getNotification();
-//		
-//		return notification;
-		return null;
+		int largeIcon = R.drawable.ic_launcher;
+		int smallIcon = R.drawable.ic_launcher;
+		
+		Notification notification = new Notification.Builder(context)
+		.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), largeIcon))
+		.setSmallIcon(smallIcon)
+		.setContentText(message)
+		.setContentTitle(context.getString(R.string.app_name))
+		.getNotification();
+
+		return notification;
 	}
 
 	
 
 	@Override
 	protected void onMessage(Context context, Intent intent) {
+		context = context.getApplicationContext();
+		
 		PushWakeLock.acquireCpuWakeLock(context);
 		mHandler.postDelayed(new Runnable() {
             @Override
@@ -122,7 +129,29 @@ public class GCMIntentService extends GCMBaseIntentService {
             }
         }, 3500);
 		
-		Log.e("LOG", "PUSH: \n" + intent.getExtras().toString());
+		Trace.Error("onReceivedPush: \n" + intent.getExtras().toString());
+
+		Bundle extras = intent.getExtras();
+		if ( extras != null ) {
+			long serverId = Long.valueOf(extras.getString("report_idx"));
+			int disasterType = Integer.valueOf(extras.getString("type_disaster"));
+			String content = extras.getString("type_disaster_string");
+			long date = Long.valueOf(extras.getString("timestamp"));
+			
+
+			// TODO 받은 메시지를 DB에 저장해야함.
+			DBAdapter adapter = new DBAdapter(context);
+			adapter.open();
+			
+			// TODO serverId 타입 변경?
+			adapter.insertDisasterMessageData(new DisasterMessageData(-1, (int)serverId, disasterType, content, date));
+			adapter.close();
+//			
+			// TODO 이 부분에서 토스트를 띄워야함.
+			showToast(context, content);
+			generateNotification(context, ID_MSG, content, null, null);
+		}
+		
 		
 	}
 
@@ -148,38 +177,21 @@ public class GCMIntentService extends GCMBaseIntentService {
 	}
 
 	
-	
-	private void showToast(final Context context, final String sender, final String msg) {
+	private void showToast(final Context context, final String content) {
 		
 		mHandler.post(new Runnable() {
 			
 			@Override
 			public void run() {
-//				View toastView = View.inflate(context, R.layout.toast_chatting, null);
-//				
-//				((TextView)toastView.findViewById(R.id.toast_push_TextView_sender)).setText(sender);
-//				((TextView)toastView.findViewById(R.id.toast_push_TextView_msg)).setText(msg);
-//				
-//				if ( mToast != null )
-//					mToast.cancel();
-//				
-//				
-//				mToast = new Toast(context);
-//				mToast.setView(toastView);
-//				mToast.setGravity(Gravity.TOP, 0, DimensionUtils.convertToPix(context, 150));
-//				mToast.setDuration(Toast.LENGTH_SHORT);
-//				mToast.show();
-//				
-//				PushWakeLock.acquireCpuWakeLock(context);
-//
-//				
-//				
-//				mHandler.postDelayed(new Runnable() {
-//		            @Override
-//		            public void run() {
-//		            	PushWakeLock.releaseCpuLock();
-//		            }
-//		        }, 3500);
+				// TODO 토스트를 이 부분에서 구현해야만 띄울 수 있다. (Context에 대한 문제일 확률이 있으나 테스트 할 시간 없음)
+				
+
+				if ( mToast != null )
+					mToast.cancel();
+
+				mToast = Toast.makeText(context, content, Toast.LENGTH_SHORT);
+				mToast.setGravity(Gravity.CENTER, 0, 0);
+				mToast.show();
 			}
 		});
 		

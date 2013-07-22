@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
+import org.dlug.disastercenter.constSet.ConstSet.AlarmCondition;
+import org.dlug.disastercenter.constSet.ConstSet.AlarmRange;
 import org.dlug.disastercenter.constSet.ConstSet.PreferenceKey;
 import org.dlug.disastercenter.utils.Trace;
 
@@ -15,7 +17,7 @@ import android.content.SharedPreferences;
 public class DisasterPreference {
 	private static final String PREFERENCE_NAME = " DisasterPreference";
 
-		
+	//
 	public static void setSecretCode(Context context, String value) {
 		setValue(context, PreferenceKey.SECRET_CODE, value);
 	}
@@ -24,32 +26,57 @@ public class DisasterPreference {
 		return getPreference(context).getString(PreferenceKey.SECRET_CODE, "");
 	}
 	
-	public static void setAlertRange(Context context, int value) {
-		setValue(context, PreferenceKey.ALERT_RANGE, value);
+	
+	//
+	public static void setMessageReceiveEnabled(Context context, boolean value) {
+		setValue(context, PreferenceKey.MESSAGE_RECEIVE, value);
 	}
 	
-	public static int getAlertRange(Context context) {
-		return getPreference(context).getInt(PreferenceKey.ALERT_RANGE, 10);
+	public static boolean isMessageReceiveEnabled(Context context) {
+		return getPreference(context).getBoolean(PreferenceKey.MESSAGE_RECEIVE, false);
 	}
-//
-//		// 
-//		public static void setLoginPassword(Context context, String password) {
-//			setValue(context, PreferenceKey.LOGIN_PASSWORD, password);
-//		}
-//		
-//		public static String getLoginPassword(Context context) {
-//			return getPreference(context).getString(PreferenceKey.LOGIN_PASSWORD, "");
-//		}
-//		
-//		// 
-//		public static void setAutoLoginEnabled(Context context, boolean enabled) {
-//			setValue(context, PreferenceKey.AUTO_LOGIN_ENABLED, enabled);
-//		}
-//		
-//		public static boolean isAutoLoginEnabled(Context context) {
-//			return getPreference(context).getBoolean(PreferenceKey.AUTO_LOGIN_ENABLED, false);
-//		}
 	
+	
+	// 
+	public static void setAlarmSoundEnabled(Context context, boolean value) {
+		setValue(context, PreferenceKey.ALARM_SOUND, value);
+	}
+	
+	public static boolean isAlarmSoundEnabled(Context context) {
+		return getPreference(context).getBoolean(PreferenceKey.ALARM_SOUND, true);
+	}
+	
+	
+	// 
+	public static void setAlarmVibeEnabled(Context context, boolean value) {
+		setValue(context, PreferenceKey.ALRAM_VIBE, value);
+	}
+	
+	public static boolean isAlarmVibeEnabled(Context context) {
+		return getPreference(context).getBoolean(PreferenceKey.ALRAM_VIBE, true);
+	}
+	
+	
+	// 
+	public static void setAlarmRange(Context context, int value) {
+		setValue(context, PreferenceKey.ALARM_RANGE, value);
+	}
+	
+	public static int getAlarmRange(Context context) {
+		return getPreference(context).getInt(PreferenceKey.ALARM_RANGE, AlarmRange.RANGE_10);
+	}
+	
+	
+	// 
+	public static void setAlarmCondition(Context context, int value) {
+		setValue(context, PreferenceKey.ALARM_CONDITION, value);
+	}
+	
+	public static int getAlarmCondition(Context context) {
+		return getPreference(context).getInt(PreferenceKey.ALARM_CONDITION, AlarmCondition.A);
+	}
+	
+
 	
 	
 	

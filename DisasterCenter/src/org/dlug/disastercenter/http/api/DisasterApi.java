@@ -8,6 +8,7 @@ import org.dlug.disastercenter.http.response.DisasterInfoResponse;
 import org.dlug.disastercenter.http.response.DisasterReportListResponse;
 import org.dlug.disastercenter.http.response.RegAppResponse;
 import org.dlug.disastercenter.preference.DisasterPreference;
+import org.dlug.disastercenter.utils.StringUtils;
 import org.dlug.disastercenter.utils.UUIDGenerator;
 import org.json.JSONObject;
 
@@ -27,10 +28,13 @@ public class DisasterApi extends BaseApi {
 	
 	
 	//
-	public void regAppAsync(int requestTag, String registationId, ApiDelegate<RegAppResponse> delegate) {
+	public void regAppAsync(int requestTag, String registationId, String secretCode, ApiDelegate<RegAppResponse> delegate) {
 		HashMap<String, String> params = new HashMap<String, String>(2);
-		params.put("key", UUIDGenerator.getUUID(mContext));
-		params.put("reg_id", registationId);
+		params.put("gcm_id", registationId);
+		params.put("uuid", UUIDGenerator.getUUID(mContext));
+		if ( !StringUtils.isEmpty(secretCode) ) {
+			params.put("secret_code", secretCode);
+		}
 		
 		startRequestAsync(requestTag, URLSet.URL_REG_APP, params, null, RegAppResponse.class, delegate);
 	}
@@ -39,7 +43,7 @@ public class DisasterApi extends BaseApi {
 	//
 	public void putLocationAsync(int requestTag, double latitude, double longitude, long range, ApiDelegate<BaseDisasterResponse> delegate) {
 		HashMap<String, String> params = new HashMap<String, String>(5);
-		params.put("key", UUIDGenerator.getUUID(mContext));
+		params.put("uuid", UUIDGenerator.getUUID(mContext));
 		params.put("secret_code", DisasterPreference.getSecretCode(mContext));
 		params.put("lat", String.valueOf(latitude));
 		params.put("lng", String.valueOf(longitude));
@@ -52,7 +56,7 @@ public class DisasterApi extends BaseApi {
 	//
 	public void reportDisasterAsync(int requestTag, double latitude, double longitude, double accuracy, int disasterType, String content, ApiDelegate<BaseDisasterResponse> delegate) {
 		HashMap<String, String> params = new HashMap<String, String>(7);
-		params.put("key", UUIDGenerator.getUUID(mContext));
+		params.put("uuid", UUIDGenerator.getUUID(mContext));
 		params.put("secret_code", DisasterPreference.getSecretCode(mContext));
 		params.put("lat", String.valueOf(latitude));
 		params.put("lng", String.valueOf(longitude));

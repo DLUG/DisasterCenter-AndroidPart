@@ -56,7 +56,7 @@ public class DisasterService extends Service {
 			Location location = LocationUtils.getLastKnownLocation(context);
 			
 			if ( location != null ) {
-				int alertRange = DisasterPreference.getAlertRange(context);
+				int alertRange = DisasterPreference.getAlarmRange(context);
 				mDisasterApi.putLocationAsync(-1, location.getLatitude(), location.getLongitude(), alertRange, null);
 			}
 			mHandler.sendEmptyMessageDelayed(-1, UPDATE_INTERVAL);

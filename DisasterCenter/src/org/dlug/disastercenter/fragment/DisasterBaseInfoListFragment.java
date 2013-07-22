@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.widget.AdapterView;
@@ -24,6 +25,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.SupportMapFragment;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
@@ -39,11 +41,11 @@ public abstract class DisasterBaseInfoListFragment extends BaseFragment {
 	private DisasterInfoAdapter mAdapter;
 	private List<DisasterInfoData> mDataList;
 	
-	private View mMoreView;
+	private View mMoreView, mProgressView;
 	
 	
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+	public View onCreateViewEx(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		mActivity = getActivity();
 		mDisasterApi = new DisasterApi(mActivity);
 		View view = inflater.inflate(R.layout.fragment_disaster_info_list, null);
@@ -54,7 +56,6 @@ public abstract class DisasterBaseInfoListFragment extends BaseFragment {
 		mPullToRefreshListView = (PullToRefreshListView)view.findViewById(R.id.fragment_disaster_info_list_PullToRefreshListView);
 		mPullToRefreshListView.setOnRefreshListener(mRefreshListener);
 		mPullToRefreshListView.setOnItemClickListener(mOnItemClickListener);
-		
 
 		mPullToRefreshListView.setAdapter(mAdapter);
 
@@ -63,6 +64,7 @@ public abstract class DisasterBaseInfoListFragment extends BaseFragment {
 		moreButton.setText("More");
 		mMoreView = moreButton;
 		mPullToRefreshListView.addFooterView(mMoreView);
+		mMoreView.setOnClickListener(mMoreListener);
 		
 		getDataAsync(REQUEST_REFRESH);
 		
@@ -86,6 +88,7 @@ public abstract class DisasterBaseInfoListFragment extends BaseFragment {
 			
 			break;
 		}
+		
 		mMoreView.setVisibility(View.GONE);
 		
 		switch ( getInfoListType() ) {
@@ -106,7 +109,13 @@ public abstract class DisasterBaseInfoListFragment extends BaseFragment {
 	
 	
 	
-	
+	//
+	private OnClickListener mMoreListener = new OnClickListener() {
+		@Override
+		public void onClick(View v) {
+			getDataAsync(REQUEST_MORE);
+		}
+	};
 	
 	//
 	private OnItemClickListener mOnItemClickListener = new OnItemClickListener() {
@@ -173,7 +182,6 @@ public abstract class DisasterBaseInfoListFragment extends BaseFragment {
 							if ( lastDataIndex > 1 ) {
 								// footer 추가
 								mMoreView.setVisibility(View.VISIBLE);
-								
 							}
 						}
 						

@@ -1,5 +1,6 @@
 package org.dlug.disastercenter.receiver;
 
+import org.dlug.disastercenter.preference.DisasterPreference;
 import org.dlug.disastercenter.service.DisasterService;
 
 import android.content.BroadcastReceiver;
@@ -10,7 +11,9 @@ public class BootReceiver extends BroadcastReceiver {
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
-		context.startService(new Intent(context, DisasterService.class));
+		if ( DisasterPreference.isMessageReceiveEnabled(context) ) {
+			context.startService(new Intent(context, DisasterService.class));
+		}
 	}
 
 }

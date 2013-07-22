@@ -2,6 +2,10 @@ package org.dlug.disastercenter.constSet;
 
 public class ConstSet {
 
+	public static final class CommonSet {
+		public static final String GCM_PROJECT_ID = "876702081363";
+	}
+	
 	public static final class URLSet {
 		public static final String HOST = "http://disastercenter.dlug.org/api/";
 		public static final String URL_REG_APP = HOST + "reg_app";
@@ -86,10 +90,28 @@ public class ConstSet {
 		public static final int USER = 1;		
 	}
 	
+	public static class AlarmRange {
+		public static final int RANGE_10 = 10;
+		public static final int RANGE_100 = 100;
+	}
 	
+	
+	public static class AlarmCondition {
+		public static final int A = 0x01;
+		public static final int B = 0x01;
+		public static final int C = 0x01;
+	}
+	
+
+
 	public static class PreferenceKey {
 		public static final String SECRET_CODE = "SECRET_CODE";
-		public static final String ALERT_RANGE = "ALERT_RANGE";
+		public static final String MESSAGE_RECEIVE = "MESSAGE_RECEIVE";
+		public static final String ALARM_SOUND = "ALARM_SOUND";
+		public static final String ALRAM_VIBE = "ALRAM_VIBE";
+		public static final String ALARM_CONDITION = "ALARM_CONDITION";
+		public static final String ALARM_RANGE = "ALARM_RANGE";
+
 	}
 	
 	public static class InfoListType {

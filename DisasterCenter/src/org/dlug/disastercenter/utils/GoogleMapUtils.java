@@ -18,7 +18,7 @@ public class GoogleMapUtils {
 		if ( googleMap == null || latLng == null )
 			return null;
 		
-		return googleMap.addMarker(new MarkerOptions().position(latLng).icon(BitmapDescriptorFactory.fromResource(resId)));
+		return googleMap.addMarker(new MarkerOptions().position(latLng).anchor(0, 0).icon(BitmapDescriptorFactory.fromResource(resId)));
 	}
 	
 	

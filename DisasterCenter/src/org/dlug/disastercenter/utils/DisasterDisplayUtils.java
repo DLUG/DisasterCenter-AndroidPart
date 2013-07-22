@@ -5,22 +5,22 @@ import java.util.Date;
 
 import org.dlug.disastercenter.R;
 import org.dlug.disastercenter.constSet.ConstSet.DisasterCode;
-import org.dlug.disastercenter.data.DisasterInfoData;
+import org.dlug.disastercenter.constSet.ConstSet.DisasterReportType;
 
-public class DisasterInfoDisplayUtils {
-	public static int getDisasterIconResource(DisasterInfoData data) {
-		return R.drawable.info_img_document;
+public class DisasterDisplayUtils {
+	public static int getDisasterIconResource(int type) {
+		return R.drawable.ic_sunflower;
 	}
 	
-	public static String getDisplayTimestamp(DisasterInfoData data) {
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy MM dd HH:mm");
-		return dateFormat.format(new Date(data.getTimestamp()));
+	public static String getDisplayTimestamp(long timeStamp) {
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd HH:mm");
+		return dateFormat.format(new Date(timeStamp));
 	}
 	
 	
-	public static String getDisplayDisasterType(DisasterInfoData data) {
+	public static String getDisplayDisasterType(int type) {
 		String displayText = "";
-		switch ( data.getDisasterType() ) {
+		switch ( type ) {
 		case DisasterCode.HEAVY_RAIN:
 			displayText = "폭우";
 			break;
@@ -60,6 +60,23 @@ public class DisasterInfoDisplayUtils {
 		case DisasterCode.BRIDGE_DESTROY:
 			displayText = "교량붕괴";
 			break;
+		}
+		return displayText;
+	}
+	
+	
+	public static String getDisplayReportType(int type) {
+		String displayText = "";
+		switch ( type ) {
+		case DisasterReportType.PUBLIC:
+			displayText = "DB";
+			break;
+
+		case DisasterReportType.USER:
+		default:
+			displayText = "신고";
+			break;
+			
 		}
 		return displayText;
 	}

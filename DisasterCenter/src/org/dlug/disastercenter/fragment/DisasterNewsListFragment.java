@@ -9,4 +9,9 @@ public class DisasterNewsListFragment extends DisasterBaseInfoListFragment {
 		return InfoListType.NEWS;
 	}
 
+	@Override
+	protected String getTitle() {
+		return "재난뉴스";
+	}
+
 }

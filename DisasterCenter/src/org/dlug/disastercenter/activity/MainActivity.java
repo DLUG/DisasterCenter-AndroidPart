@@ -11,9 +11,8 @@ import org.dlug.disastercenter.fragment.DisasterReportFragment;
 import org.dlug.disastercenter.fragment.DisasterReportListFragment;
 import org.dlug.disastercenter.fragment.MessageBoxFragment;
 import org.dlug.disastercenter.fragment.SettingFragment;
-import org.dlug.disastercenter.service.DisasterService;
+import org.dlug.disastercenter.view.MenuView;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -24,7 +23,8 @@ import android.support.v4.widget.SlidingPaneLayout;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.ImageView.ScaleType;
 
 public class MainActivity extends BaseActivity {
 
@@ -43,18 +43,18 @@ public class MainActivity extends BaseActivity {
 		
 		mMenuAdapter = new MenuAdapter(this, menuLayout, layout, R.id.activity_main_FrameLayout_content);
 	
-		mMenuAdapter.addMenu("재난신고 하기", DisasterReportFragment.class, null);
-		mMenuAdapter.addMenu("재난신고 현황", DisasterReportListFragment.class, null);
-		mMenuAdapter.addMenu("재난뉴스", DisasterNewsListFragment.class, null);
-		mMenuAdapter.addMenu("재난정보", DisasterInfoListFragment.class, null);
-		mMenuAdapter.addMenu("수신메세지", MessageBoxFragment.class, null);
-		mMenuAdapter.addMenu("설정", SettingFragment.class, null);
+		mMenuAdapter.addMenu("재난신고 하기", DisasterReportFragment.class, null, R.drawable.ic_report);
+		mMenuAdapter.addMenu("재난신고 현황", DisasterReportListFragment.class, null, R.drawable.ic_report_state);
+		mMenuAdapter.addMenu("재난뉴스", DisasterNewsListFragment.class, null, R.drawable.ic_news);
+		mMenuAdapter.addMenu("재난정보", DisasterInfoListFragment.class, null, R.drawable.ic_info);
+		mMenuAdapter.addMenu("수신메세지", MessageBoxFragment.class, null, R.drawable.ic_message);
+		mMenuAdapter.addMenu("설정", SettingFragment.class, null, R.drawable.ic_setting);
 		
 		mMenuAdapter.openMenu("재난뉴스");
 		
 
-		// 설정 시 시작해야함.
-		startService(new Intent(this, DisasterService.class));
+	
+
 	}
 
 
@@ -114,7 +114,7 @@ public class MainActivity extends BaseActivity {
 			return false;
 		}
 		
-		public void addMenu(String _tag, Class<? extends BaseFragment> _class, Bundle _args) {
+		public void addMenu(String _tag, Class<? extends BaseFragment> _class, Bundle _args, int iconResid) {
 			MenuInfo menuInfo = new MenuInfo(_tag, _class, _args);
 			
 			menuInfo.fragment = (BaseFragment)mActivity.getSupportFragmentManager().findFragmentByTag(_tag);
@@ -126,16 +126,24 @@ public class MainActivity extends BaseActivity {
 			}
 			
 			mMenuMap.put(_tag, menuInfo);
-			
+		
+			if ( mMenuList.size() != 0 ) {
+				ImageView lineView = new ImageView(mActivity);
+				lineView.setScaleType(ScaleType.FIT_XY);
+				lineView.setImageResource(R.drawable.line_main_menu);
+				
+				mMenuLayout.addView(lineView);
+			}
 			
 			// CustomView
-			Button menu = new Button(mActivity);
-			menu.setText(_tag);
-			menu.setTag(_tag);
-			menu.setOnClickListener(mMenuClickListener);
+			MenuView menuView = new MenuView(mActivity);
+
+			menuView.setMenuData(iconResid, _tag);
+			menuView.setTag(_tag);
+			menuView.setOnClickListener(mMenuClickListener);
 			
-			mMenuList.add(menu);
-			mMenuLayout.addView(menu);
+			mMenuList.add(menuView);
+			mMenuLayout.addView(menuView);
 		}
 		
 		public void openMenu(String tag) {
@@ -162,8 +170,7 @@ public class MainActivity extends BaseActivity {
 				}
 				
 				mLastMenu = newMenu;
-				ft.commit();
-				fm.executePendingTransactions();
+				ft.commitAllowingStateLoss();
 				
 				
 				for ( View view : mMenuList ) {
